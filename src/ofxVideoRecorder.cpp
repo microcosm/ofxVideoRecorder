@@ -347,6 +347,7 @@ bool ofxVideoRecorder::setupCustomOutput(int w, int h, float fps, int sampleRate
     bIsInitialized = true;
     bIsRecording = false;
     bIsPaused = false;
+    bIsAutoSync = true;
 
     startTime = 0;
     recordingDuration = 0;
@@ -363,7 +364,7 @@ bool ofxVideoRecorder::addFrame(const ofPixels &pixels){
     {
         int framesToAdd = 1; // default add one frame per request
 
-        if((bRecordAudio || bSysClockSync) && !bFinishing){
+        if(bIsAutoSync && (bRecordAudio || bSysClockSync) && !bFinishing){
 
             double syncDelta;
             double videoRecordedTime = videoFramesRecorded / frameRate;
@@ -468,6 +469,11 @@ void ofxVideoRecorder::setPaused(bool bPause){
         // Log
         ofLogVerbose() << "Recording." << endl;
     }
+}
+
+//--------------------------------------------------------------
+void ofxVideoRecorder::setAutoSync(bool bAutoSync){
+    bIsAutoSync = bAutoSync;
 }
 
 //--------------------------------------------------------------
